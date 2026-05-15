@@ -1,34 +1,49 @@
 # RAG Project
 
-Claude와 함께 만드는 토이 RAG 시스템. 마크다운 문서를 지식 베이스로 인덱싱하고, 질문에 답하는 CLI 도구를 직접 구현한다.
+Claude와 함께 만드는 토이 RAG 시스템. wiki 노트를 지식 베이스로 인덱싱하고, 질문에 답하는 CLI 도구를 직접 구현한다.
 
 ## 실습 흐름
 
 ```
-3회차: ingest.py 구현 — 문서 인덱싱 파이프라인
-4회차: query.py 구현 + ingest_v2.py 청크 전략 개선
-5회차: wiki 노트 → docs/ 연결 — 내 기록이 검색된다
-6회차: watch.py 구현 — 파일 변경 감지 + 자동 재인덱싱
+4회차: ingest.py 구현 — 문서 인덱싱 파이프라인 (3회차는 이론)
+4회차: ingest_v2.py   — 청크 전략 개선
+5회차: query.py 구현  — 검색 + 답변 생성
+5회차: wiki 노트 → DOCS_DIR 연결 — 내 기록이 검색된다
+6회차: watch.py 구현  — 파일 변경 감지 + 자동 재인덱싱
 ```
 
 ---
 
 ## 시작하기
 
-### 1. 환경 설치
+### 1. 사전 준비
+
+Ollama가 실행 중이어야 합니다:
+
+```bash
+ollama serve          # 별도 터미널에서 실행
+ollama pull qwen2.5:3b
+ollama pull nomic-embed-text
+```
+
+### 2. 환경 설치
 
 ```bash
 bash setup.sh
 source .venv/bin/activate
 ```
 
-### 2. docs/ 에 문서 추가
+### 3. (선택) OBSIDIAN_VAULT 설정
 
-`docs/` 폴더에 인덱싱할 마크다운 파일을 넣는다. 샘플 파일 2개가 이미 들어 있다.
+wiki 노트를 RAG 소스로 쓰려면:
 
-자신의 wiki 노트, 업무 문서, 강의 정리 노트 등 무엇이든 가능하다.
+```bash
+export OBSIDIAN_VAULT=/path/to/your/obsidian/vault
+```
 
-### 3. Claude로 ingest.py 구현 (3회차)
+설정하지 않으면 `docs/` 폴더를 소스로 사용합니다.
+
+### 4. Claude로 ingest.py 구현 (4회차)
 
 Claude Code 세션에서:
 
@@ -49,7 +64,7 @@ python src/ingest.py
 ✓ 3개 문서, 12개 청크 인덱싱 완료
 ```
 
-### 4. Claude로 query.py 구현 (4회차)
+### 5. Claude로 query.py 구현 (5회차)
 
 ```
 query.py 만들어줘
@@ -61,7 +76,7 @@ query.py 만들어줘
 python src/query.py "ChromaDB를 선택한 이유가 뭐야?"
 ```
 
-### 5. 청크 전략 개선 (4회차)
+### 6. 청크 전략 개선 (4회차)
 
 검색 결과가 어색하면 청크 전략을 개선한다.
 
@@ -69,9 +84,10 @@ python src/query.py "ChromaDB를 선택한 이유가 뭐야?"
 ingest.py 청크 전략 개선해줘. RecursiveCharacterTextSplitter 방식으로.
 ```
 
-### 6. wiki 노트 → docs/ 연결 (5회차)
+### 7. wiki 노트 → DOCS_DIR 연결 (5회차)
 
-자신의 wiki 노트를 `docs/`에 복사하고 재인덱싱한다.
+`OBSIDIAN_VAULT`를 설정했다면 자동으로 wiki 노트가 소스가 된다.
+미설정 시 수동으로 복사:
 
 ```bash
 cp ~/path/to/wiki/semantic/*.md docs/
@@ -80,16 +96,15 @@ python src/ingest.py
 python src/query.py "ChromaDB를 선택한 이유가 뭐야?"
 ```
 
-### 7. 자동 재인덱싱 (6회차)
+### 8. 자동 재인덱싱 (6회차)
 
 ```
 watch.py 만들어줘.
-docs/ 폴더를 감시해서 .md 파일이 추가·변경·삭제되면
+DOCS_DIR 폴더를 감시해서 .md 파일이 추가·변경·삭제되면
 자동으로 재인덱싱하는 스크립트야.
 ```
 
 ```bash
-pip install watchdog
 python src/watch.py
 ```
 
@@ -136,11 +151,10 @@ episodic에 기록해줘.
 | 오류 | 해결 |
 |------|------|
 | `ModuleNotFoundError: No module named 'chromadb'` | `pip install -r requirements.txt` |
-| `ModuleNotFoundError: No module named 'sentence_transformers'` | `pip install -r requirements.txt` |
-| `FileNotFoundError: docs/ not found` | `rag-project/` 디렉토리에서 실행 |
-| 첫 실행 시 수십 초 대기 | 임베딩 모델 다운로드 중 (정상) |
-| `✓ 0개 문서` | `docs/`에 `.md` 파일 추가 |
-| Ollama connection error | `ollama serve` 실행 후 재시도 |
+| `ConnectionError: localhost:11434` | `ollama serve` 실행 후 재시도 |
+| `nomic-embed-text` 모델 없음 | `ollama pull nomic-embed-text` |
+| `✓ 0개 문서` | OBSIDIAN_VAULT 설정 또는 `docs/`에 `.md` 파일 추가 |
+| `FileNotFoundError` | `rag-project/` 디렉토리에서 실행 |
 
 ---
 

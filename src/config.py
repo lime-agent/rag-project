@@ -1,10 +1,14 @@
 from pathlib import Path
+import os
 
 ROOT = Path(__file__).parent.parent
-DOCS_DIR = ROOT / "docs"
+
+_vault = os.environ.get("OBSIDIAN_VAULT", "")
+DOCS_DIR = Path(_vault) / "Projects/rag-project" if _vault else ROOT / "docs"
+
 CHROMA_DIR = ROOT / ".chroma"
 
-EMBED_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+EMBED_MODEL = "nomic-embed-text"
 COLLECTION_NAME = "wiki"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50

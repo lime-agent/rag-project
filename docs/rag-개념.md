@@ -30,7 +30,7 @@ LLM 답변 + 출처 파일명
 
 텍스트를 숫자 벡터로 변환하는 것이다. 의미가 비슷한 문장은 벡터 공간에서 가까운 위치에 놓인다. 이 거리를 계산해서 유사한 문서를 찾는다.
 
-이 프로젝트에서는 `sentence-transformers`의 `paraphrase-multilingual-MiniLM-L12-v2` 모델을 사용한다. 50개 언어를 지원하고 한국어 임베딩 품질이 충분하다.
+이 프로젝트에서는 Ollama의 `nomic-embed-text` 모델을 사용한다. 768차원 벡터를 생성하며 한국어를 포함한 다국어를 지원한다. Ollama가 이미 설치되어 있으면 `ollama pull nomic-embed-text` 한 줄로 추가 설치 없이 사용할 수 있다.
 
 ## ChromaDB란
 
