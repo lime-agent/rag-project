@@ -54,7 +54,7 @@ echo "✓ 패키지 설치 완료"
 echo ""
 echo "=== llm-wiki-kit 설정 ==="
 
-WIKI_DIR="$HOME/wiki_example"
+WIKI_DIR="$HOME/llm-wiki-kit"
 
 if [ -z "$OBSIDIAN_VAULT" ]; then
   # wiki_example 클론 (없는 경우)

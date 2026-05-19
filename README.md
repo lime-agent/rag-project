@@ -35,8 +35,8 @@ setup.sh가 자동으로 처리하는 것:
 - Ollama 설치 및 실행
 - qwen2.5:3b / nomic-embed-text 모델 다운로드
 - Python 가상환경 생성 및 패키지 설치
-- wiki_example(llm-wiki-kit) 클론 → `~/wiki_example`
-- `OBSIDIAN_VAULT=~/wiki_example/obsidian` 환경변수 설정 및 ~/.bashrc 저장
+- llm-wiki-kit(llm-wiki-kit) 클론 → `~/llm-wiki-kit`
+- `OBSIDIAN_VAULT=~/llm-wiki-kit/obsidian` 환경변수 설정 및 ~/.bashrc 저장
 - `$OBSIDIAN_VAULT/Projects/rag-project/` 디렉토리 생성
 
 ### 4. Claude로 ingest.py 구현 (4회차)
