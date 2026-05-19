@@ -50,19 +50,37 @@ source .venv/bin/activate
 pip install -q -r requirements.txt
 echo "✓ 패키지 설치 완료"
 
+# llm-wiki-kit (wiki_example) 설정
+echo ""
+echo "=== llm-wiki-kit 설정 ==="
+
+WIKI_DIR="$HOME/wiki_example"
+
 if [ -z "$OBSIDIAN_VAULT" ]; then
-  echo ""
-  echo "ℹ OBSIDIAN_VAULT 환경변수가 설정되지 않았습니다."
-  echo "  docs/ 폴더를 소스로 사용합니다."
-  if [ -z "$(ls -A docs/ 2>/dev/null)" ]; then
-    echo "⚠ docs/ 폴더가 비어 있습니다. 인덱싱할 마크다운 파일을 넣으세요."
+  # wiki_example 클론 (없는 경우)
+  if [ ! -d "$WIKI_DIR" ]; then
+    echo "wiki_example 클론 중..."
+    git clone https://github.com/lime-creat/llm-wiki-example.git "$WIKI_DIR"
+    echo "✓ wiki_example 클론 완료"
   fi
-else
-  echo "✓ OBSIDIAN_VAULT: $OBSIDIAN_VAULT"
+
+  export OBSIDIAN_VAULT="$WIKI_DIR/obsidian"
+
+  # ~/.bashrc에 영구 저장
+  if ! grep -q "OBSIDIAN_VAULT" ~/.bashrc; then
+    echo "" >> ~/.bashrc
+    echo "export OBSIDIAN_VAULT=$WIKI_DIR/obsidian" >> ~/.bashrc
+  fi
+  echo "✓ OBSIDIAN_VAULT ~/.bashrc에 저장됨"
 fi
+
+# rag-project 노트 디렉토리 생성
+mkdir -p "$OBSIDIAN_VAULT/Projects/rag-project"
+echo "✓ OBSIDIAN_VAULT: $OBSIDIAN_VAULT"
 
 echo ""
 echo "=== 세팅 완료 ==="
 echo "다음 단계:"
-echo "  1. Claude 실행 후 'ingest.py 만들어줘' 요청 (4회차)"
-echo "  2. python src/ingest.py"
+echo "  1. 새 터미널 열기 (또는 'source ~/.bashrc')"
+echo "  2. claude 실행 후 'ingest.py 만들어줘' 요청 (4회차)"
+echo "  3. python src/ingest.py"

@@ -16,32 +16,28 @@ Claude와 함께 만드는 토이 RAG 시스템. wiki 노트를 지식 베이스
 
 ## 시작하기
 
-### 1. 사전 준비
-
-Ollama가 실행 중이어야 합니다:
+### 1. rag-project 클론
 
 ```bash
-ollama serve          # 별도 터미널에서 실행
-ollama pull qwen2.5:3b
-ollama pull nomic-embed-text
+git clone https://github.com/lime-agent/rag-project.git
+cd rag-project
 ```
 
-### 2. 환경 설치
+### 2. 환경 설치 (한 번에 전부)
 
 ```bash
-bash setup.sh
+sudo ./setup.sh
+source ~/.bashrc
 source .venv/bin/activate
 ```
 
-### 3. (선택) OBSIDIAN_VAULT 설정
-
-wiki 노트를 RAG 소스로 쓰려면:
-
-```bash
-export OBSIDIAN_VAULT=/path/to/your/obsidian/vault
-```
-
-설정하지 않으면 `docs/` 폴더를 소스로 사용합니다.
+setup.sh가 자동으로 처리하는 것:
+- Ollama 설치 및 실행
+- qwen2.5:3b / nomic-embed-text 모델 다운로드
+- Python 가상환경 생성 및 패키지 설치
+- wiki_example(llm-wiki-kit) 클론 → `~/wiki_example`
+- `OBSIDIAN_VAULT=~/wiki_example/obsidian` 환경변수 설정 및 ~/.bashrc 저장
+- `$OBSIDIAN_VAULT/Projects/rag-project/` 디렉토리 생성
 
 ### 4. Claude로 ingest.py 구현 (4회차)
 
