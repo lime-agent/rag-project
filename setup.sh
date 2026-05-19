@@ -5,20 +5,36 @@ echo "=== RAG Project 환경 세팅 ==="
 
 python3 --version || { echo "Python 3가 필요합니다."; exit 1; }
 
-# Ollama 실행 여부 확인
+# Ollama 설치 여부 확인 및 설치
+if ! command -v ollama &> /dev/null; then
+  echo "Ollama 설치 중..."
+  curl -fsSL https://ollama.com/install.sh | sh
+  sudo systemctl enable ollama
+  echo "✓ Ollama 설치 완료"
+fi
+
+# Ollama 서비스 시작
 if ! curl -s http://localhost:11434/api/tags > /dev/null 2>&1; then
-  echo "⚠ Ollama가 실행되지 않았습니다. 'ollama serve'를 먼저 실행하세요."
-  exit 1
+  echo "Ollama 서비스 시작 중..."
+  sudo systemctl start ollama
+  sleep 5
 fi
 echo "✓ Ollama 실행 확인"
 
-# nomic-embed-text 모델 확인
+# 모델 다운로드 (없는 경우만)
+if ! ollama list 2>/dev/null | grep -q "qwen2.5:3b"; then
+  echo "qwen2.5:3b 모델 다운로드 중... (시간이 걸립니다)"
+  ollama pull qwen2.5:3b
+fi
+echo "✓ qwen2.5:3b 확인"
+
 if ! ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
   echo "nomic-embed-text 모델 다운로드 중..."
   ollama pull nomic-embed-text
 fi
 echo "✓ nomic-embed-text 확인"
 
+# Python 가상환경 및 패키지
 if [ ! -d ".venv" ]; then
   python3 -m venv .venv
   echo "✓ 가상환경 생성"
