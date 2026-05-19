@@ -26,7 +26,7 @@ cd rag-project
 ### 2. 환경 설치 (한 번에 전부)
 
 ```bash
-sudo ./setup.sh
+sudo -E bash setup.sh
 source ~/.bashrc
 source .venv/bin/activate
 ```
