@@ -60,7 +60,7 @@ if [ -z "$OBSIDIAN_VAULT" ]; then
   # wiki_example 클론 (없는 경우)
   if [ ! -d "$WIKI_DIR" ]; then
     echo "wiki_example 클론 중..."
-    git clone https://github.com/lime-creat/llm-wiki-example.git "$WIKI_DIR"
+    git clone https://github.com/lime-agent/llm-wiki-kit.git "$WIKI_DIR"
     echo "✓ wiki_example 클론 완료"
   fi
 
