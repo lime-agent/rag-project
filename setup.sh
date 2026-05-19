@@ -64,12 +64,12 @@ if [ -z "$OBSIDIAN_VAULT" ]; then
     echo "✓ wiki_example 클론 완료"
   fi
 
-  export OBSIDIAN_VAULT="$WIKI_DIR/obsidian"
+  export OBSIDIAN_VAULT="$WIKI_DIR"
 
   # ~/.bashrc에 영구 저장
   if ! grep -q "OBSIDIAN_VAULT" ~/.bashrc; then
     echo "" >> ~/.bashrc
-    echo "export OBSIDIAN_VAULT=$WIKI_DIR/obsidian" >> ~/.bashrc
+    echo "export OBSIDIAN_VAULT=$WIKI_DIR" >> ~/.bashrc
   fi
   echo "✓ OBSIDIAN_VAULT ~/.bashrc에 저장됨"
 fi
