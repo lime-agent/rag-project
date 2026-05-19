@@ -35,9 +35,18 @@ setup.sh가 자동으로 처리하는 것:
 - Ollama 설치 및 실행
 - qwen2.5:3b / nomic-embed-text 모델 다운로드
 - Python 가상환경 생성 및 패키지 설치
-- llm-wiki-kit(llm-wiki-kit) 클론 → `~/llm-wiki-kit`
+- llm-wiki-kit 클론 → `~/llm-wiki-kit`
 - `OBSIDIAN_VAULT=~/llm-wiki-kit/obsidian` 환경변수 설정 및 ~/.bashrc 저장
 - `$OBSIDIAN_VAULT/Projects/rag-project/` 디렉토리 생성
+
+### 3. llm-wiki-kit 세팅
+
+```bash
+cd ~/llm-wiki-kit
+./setup.sh
+```
+
+Claude Code 스킬(obsidian-save / obsidian-load)과 SessionStart·Stop 훅이 등록된다. 세션 시작 시 Obsidian 컨텍스트가 자동으로 로드된다.
 
 ### 4. Claude로 ingest.py 구현 (4회차)
 
