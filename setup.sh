@@ -35,7 +35,13 @@ fi
 echo "✓ nomic-embed-text 확인"
 
 # Python 가상환경 및 패키지
-if [ ! -d ".venv" ]; then
+if ! python3 -c "import ensurepip" &> /dev/null 2>&1; then
+  echo "python3-venv 설치 중..."
+  sudo apt-get update && sudo apt-get install -y python3-venv
+fi
+
+if [ ! -f ".venv/bin/activate" ]; then
+  rm -rf .venv
   python3 -m venv .venv
   echo "✓ 가상환경 생성"
 fi
